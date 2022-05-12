@@ -9,4 +9,4 @@ Comments : Further optimization is needed, possibly a GUI can be added too.
 
 ///HOW TO USE///
 
-Place the main.py in a folder with netcdf files a
+Place the main.py in a folder with netcdf files and execute the code. The .txt files will be created in the same directory.
