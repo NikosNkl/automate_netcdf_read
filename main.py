@@ -3,6 +3,8 @@ import numpy as np
 import pandas as pd
 import os
 import glob
+import array
+
 k = 0
 
 for filename in glob.glob('*.nc'): #access all netCDF files in directory
@@ -11,24 +13,31 @@ for filename in glob.glob('*.nc'): #access all netCDF files in directory
     x = []
     y = []
     z = []
+    a = []
+    b = []
 
     ds = nc.Dataset(filename) #read file
+    print(ds)
 
-    # print(ds)
-
-    saa = ds['solar_azimuth_angle'][:] #read specific value into numpy array
-    print(saa[325][292])
-    for j in range(500):
-     for i in range(500):
+    press = ds['ctth_pres'][:] #read specific value into numpy array
+    alti = ds['ctth_alti'][:]
+    temp = ds['ctth_tempe'][:]
+    leny = ((ds['ny']).shape[0])
+    lenx = ((ds['nx']).shape[0])
+    # print(leny)
+    # print(press[273][2582])
+    # print(press)
+    for j in range(leny):
+     for i in range(lenx):
       y.append(j)
       x.append(i)
-      z.append(saa[i][j])
+      z.append(press[j][i])
+      a.append(alti[j][i])
+      b.append(temp[j][i])
 
-    saa = np.column_stack((y, x, z))
+    final = np.column_stack((y, x, z, a, b))
 
-    # print(saa)
-
-    df = pd.DataFrame(saa, columns = ['Column','Row','Solar Azimuth Angle']) #create pandas dataframe from numpy array
-    df.to_csv('MVIRI{}.txt'.format(k),sep=" ",index=False) #create .txt file with different filename for each iteration
+    df = pd.DataFrame(final, columns = ['Column','Row','Pressure','Altitude','Temperature']) #create pandas dataframe from numpy array
+    df.to_csv('Data{}.txt'.format(k),sep=" ",index=False) #create .txt file with different filename for each iteration
 
     k+=1
