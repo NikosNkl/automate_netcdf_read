@@ -2,15 +2,21 @@ import netCDF4 as nc
 import numpy as np
 import pandas as pd
 import os
+from os import path
 import glob
 
 for data in glob.glob('*.nc'): #access all netCDF files in directory
+
    s = os.path.join(os.getcwd(), data)
+
    with open(s, 'r') as fn:
 
     s = (os.path.basename(s))
 
-    s = os.path.splitext(s) #same filename for exported .txt
+    s = os.path.splitext(s)  # same filename for exported .txt
+
+    if path.exists('{}.txt'.format(s[0])): #don't overwrite existing files
+     break
 
     print (s[0])
 
