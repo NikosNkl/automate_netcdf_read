@@ -2,6 +2,7 @@ import netCDF4 as nc
 import numpy as np
 import pandas as pd
 import os
+import math
 from os import path
 import glob
 
@@ -16,9 +17,8 @@ for data in glob.glob('*.nc'): #access all netCDF files in directory
     s = os.path.splitext(s)  # same filename for exported .txt
 
     if path.exists('{}.txt'.format(s[0])): #don't overwrite existing files
-     break
-
-    print (s[0])
+     print(s[0])
+     continue
 
     x = []
     y = []
@@ -48,6 +48,8 @@ for data in glob.glob('*.nc'): #access all netCDF files in directory
       b.append(temp[j][i])
 
     final = np.column_stack((y, x, z, a, b))
+
+    print(math.isnan(final[0][3]))
 
     df = pd.DataFrame(final, columns = ['Column','Row','Pressure','Altitude','Temperature']) #create pandas dataframe from numpy array
     df.to_csv('{}.txt'.format(s[0]),sep=" ",index=False) #create .txt file with different filename for each iteration
