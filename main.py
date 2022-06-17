@@ -47,9 +47,9 @@ for data in glob.glob('*.nc'): #access all netCDF files in directory
       a.append(alti[j][i])
       b.append(temp[j][i])
 
-    final = np.column_stack((y, x, z, a, b))
+    final = np.column_stack((x, y, z, a, b))
 
     print(math.isnan(final[0][3]))
 
-    df = pd.DataFrame(final, columns = ['Column','Row','Pressure','Altitude','Temperature']) #create pandas dataframe from numpy array
+    df = pd.DataFrame(final, columns = ['Row','Column','Pressure','Altitude','Temperature']) #create pandas dataframe from numpy array
     df.to_csv('{}.txt'.format(s[0]),sep=" ",index=False) #create .txt file with different filename for each iteration
